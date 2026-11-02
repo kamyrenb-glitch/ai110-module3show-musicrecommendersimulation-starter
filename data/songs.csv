@@ -9,3 +9,11 @@ id,title,artist,genre,mood,energy,tempo_bpm,valence,danceability,acousticness
 8,Night Drive Loop,Neon Echo,synthwave,moody,0.75,110,0.49,0.73,0.22
 9,Focus Flow,LoRoom,lofi,focused,0.40,80,0.59,0.60,0.78
 10,Rooftop Lights,Indigo Parade,indie pop,happy,0.76,124,0.81,0.82,0.35
+11,Crown Talk,Vel Kingsley,hip-hop,confident,0.72,140,0.55,0.80,0.08
+12,Velvet Hours,Amara Lux,r&b,romantic,0.48,92,0.62,0.70,0.30
+13,Morning Glory Rise,Grace Avenue Choir,gospel,uplifting,0.68,104,0.88,0.58,0.45
+14,Sunday Owambe,Kola Breeze,afrobeats,celebratory,0.80,108,0.90,0.91,0.15
+15,Island Patience,Root Harbor,reggae,peaceful,0.45,76,0.74,0.75,0.40
+16,Letters in Autumn,Elena Varga Quartet,classical,nostalgic,0.22,66,0.38,0.20,0.97
+17,Gravel Road Home,Dusty Rowe,country,hopeful,0.58,96,0.70,0.55,0.68
+18,Honeyed Testimony,Marvella Jones,soul,soulful,0.52,84,0.60,0.63,0.50

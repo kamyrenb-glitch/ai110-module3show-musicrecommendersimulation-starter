@@ -17,17 +17,60 @@ Replace this paragraph with your own summary of what your version does.
 
 ## How The System Works
 
-Explain your design in plain language.
+Real-world recommenders often combine two approaches. **Collaborative filtering** uses user behavior, such as "people who liked this song also liked that one." **Content-based filtering** uses the attributes of the items themselves, such as a song's energy or mood. Large platforms usually blend both.
 
-Some prompts to answer:
+This simulation is **content-based only**. It compares each song's attributes to one user's stated preferences. Energy closeness matters most, followed by mood, then genre and acoustic preference (equal weight).
 
-- What features does each `Song` use in your system
-  - For example: genre, mood, energy, tempo
-- What information does your `UserProfile` store
-- How does your `Recommender` compute a score for each song
-- How do you choose which songs to recommend
+### What each `Song` stores
 
-You can include a simple diagram or bullet list if helpful.
+`id`, `title`, `artist`, `genre`, `mood`, `energy`, `tempo_bpm`, `valence`, `danceability`, `acousticness`
+
+### What each `UserProfile` stores
+
+`favorite_genre`, `favorite_mood`, `target_energy`, `likes_acoustic`
+
+### Stored vs. used for scoring
+
+A `Song` stores more features than the scoring recipe currently uses. Only features with a matching user preference are scored:
+
+| Song feature | Matching preference | Points |
+|---|---|---|
+| `energy` | `target_energy`: `3.0 * max(0, 1 - abs(song.energy - user.energy) / 0.5)` | up to 3.0 |
+| `mood` | `favorite_mood` (exact match) | 1.5 |
+| `genre` | `favorite_genre` (exact match) | 1.0 |
+| `acousticness` | `likes_acoustic`: `song.acousticness` if True, otherwise `1 - song.acousticness` | up to 1.0 |
+
+Energy points shrink as the song's energy moves away from the target and reach 0 once the gap is 0.5 or more.
+
+`tempo_bpm`, `danceability`, and `valence` are stored but **not scored yet**, because the profile has no target for them. They are planned as future improvements. `id`, `title`, and `artist` identify the song and are not scored.
+
+### Ranking
+
+Each song gets a score from **0.0 to 6.5 points**. Songs are ranked by:
+
+1. Highest score
+2. Smallest energy gap, if scores tie
+3. Lowest song `id`, if still tied
+
+The top K songs are returned, each with an explanation of how it earned its points.
+
+### Planned test profile
+
+```python
+user_prefs = {
+    "genre": "r&b",
+    "mood": "romantic",
+    "energy": 0.6,
+    "likes_acoustic": False,
+}
+```
+
+### Bias and limitations
+
+- **Small catalog:** only one song is R&B and only one is romantic (the same song), so it gets a large head start over everything else.
+- **Exact matching:** related genres and moods, such as hip-hop, soul, or "soulful" vs. "romantic", earn no genre or mood points even when the vibe is similar.
+- **Personal choices:** the 0.5 energy cutoff and fixed point values reflect my preferences and may not suit every listener.
+- **Missing information:** lyrics, artist relationships, and personal listening context are not represented.
 
 ---
 
@@ -41,6 +84,7 @@ You can include a simple diagram or bullet list if helpful.
    python -m venv .venv
    source .venv/bin/activate      # Mac or Linux
    .venv\Scripts\activate         # Windows
+   ```
 
 2. Install dependencies
 
@@ -68,15 +112,45 @@ You can add more tests in `tests/test_recommender.py`.
 
 ## Sample Recommendation Output
 
-Paste a sample of your recommender's output here as a text block so a reader can see what it produces:
+Output of `python -m src.main` with the default pop / happy / 0.8 energy profile:
 
-```
-# e.g.:
-# User profile: genre=indie, mood=chill, energy=low
-# Recommendations:
-#   1. ...
-#   2. ...
-#   3. ...
+```text
+Loading songs from data/songs.csv...
+Loaded songs: 18
+
+User profile: {'genre': 'pop', 'mood': 'happy', 'energy': 0.8}
+
+Top recommendations:
+
+1. Sunrise City by Neon Echo - Score: 5.88
+   - genre match: pop (+1.00)
+   - mood match: happy (+1.50)
+   - energy 0.82 vs target 0.80 (+2.88)
+   - no acoustic preference given (+0.50)
+
+2. Rooftop Lights by Indigo Parade - Score: 4.76
+   - genre does not match pop (+0.00)
+   - mood match: happy (+1.50)
+   - energy 0.76 vs target 0.80 (+2.76)
+   - no acoustic preference given (+0.50)
+
+3. Gym Hero by Max Pulse - Score: 3.72
+   - genre match: pop (+1.00)
+   - mood does not match happy (+0.00)
+   - energy 0.93 vs target 0.80 (+2.22)
+   - no acoustic preference given (+0.50)
+
+4. Sunday Owambe by Kola Breeze - Score: 3.50
+   - genre does not match pop (+0.00)
+   - mood does not match happy (+0.00)
+   - energy 0.80 vs target 0.80 (+3.00)
+   - no acoustic preference given (+0.50)
+
+5. Night Drive Loop by Neon Echo - Score: 3.20
+   - genre does not match pop (+0.00)
+   - mood does not match happy (+0.00)
+   - energy 0.75 vs target 0.80 (+2.70)
+   - no acoustic preference given (+0.50)
 ```
 
 **Screenshot or video** *(optional)*: <!-- Insert a screenshot or demo video link here -->
