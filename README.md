@@ -112,44 +112,172 @@ You can add more tests in `tests/test_recommender.py`.
 
 ## Sample Recommendation Output
 
-Output of `python -m src.main` with the default pop / happy / 0.8 energy profile:
+These outputs come from running `python -m src.main` with four stress-test profiles, the last of which is adversarial on purpose.
+
+### High-Energy Happy Pop
 
 ```text
 Loading songs from data/songs.csv...
 Loaded songs: 18
 
-User profile: {'genre': 'pop', 'mood': 'happy', 'energy': 0.8}
+============================================================
+Profile: High-Energy Happy Pop
+User profile: {'genre': 'pop', 'mood': 'happy', 'energy': 0.9, 'likes_acoustic': False}
+============================================================
 
 Top recommendations:
 
-1. Sunrise City by Neon Echo - Score: 5.88
+1. Sunrise City by Neon Echo - Score: 5.84
    - genre match: pop (+1.00)
    - mood match: happy (+1.50)
-   - energy 0.82 vs target 0.80 (+2.88)
-   - no acoustic preference given (+0.50)
+   - energy 0.82 vs target 0.90 (+2.52)
+   - non-acoustic preference (+0.82)
 
-2. Rooftop Lights by Indigo Parade - Score: 4.76
-   - genre does not match pop (+0.00)
-   - mood match: happy (+1.50)
-   - energy 0.76 vs target 0.80 (+2.76)
-   - no acoustic preference given (+0.50)
-
-3. Gym Hero by Max Pulse - Score: 3.72
+2. Gym Hero by Max Pulse - Score: 4.77
    - genre match: pop (+1.00)
    - mood does not match happy (+0.00)
-   - energy 0.93 vs target 0.80 (+2.22)
-   - no acoustic preference given (+0.50)
+   - energy 0.93 vs target 0.90 (+2.82)
+   - non-acoustic preference (+0.95)
 
-4. Sunday Owambe by Kola Breeze - Score: 3.50
+3. Rooftop Lights by Indigo Parade - Score: 4.31
+   - genre does not match pop (+0.00)
+   - mood match: happy (+1.50)
+   - energy 0.76 vs target 0.90 (+2.16)
+   - non-acoustic preference (+0.65)
+
+4. Storm Runner by Voltline - Score: 3.84
    - genre does not match pop (+0.00)
    - mood does not match happy (+0.00)
-   - energy 0.80 vs target 0.80 (+3.00)
-   - no acoustic preference given (+0.50)
+   - energy 0.91 vs target 0.90 (+2.94)
+   - non-acoustic preference (+0.90)
 
-5. Night Drive Loop by Neon Echo - Score: 3.20
+5. Sunday Owambe by Kola Breeze - Score: 3.25
    - genre does not match pop (+0.00)
    - mood does not match happy (+0.00)
-   - energy 0.75 vs target 0.80 (+2.70)
+   - energy 0.80 vs target 0.90 (+2.40)
+   - non-acoustic preference (+0.85)
+```
+
+### Chill Acoustic Lofi
+
+```text
+============================================================
+Profile: Chill Acoustic Lofi
+User profile: {'genre': 'lofi', 'mood': 'chill', 'energy': 0.3, 'likes_acoustic': True}
+============================================================
+
+Top recommendations:
+
+1. Library Rain by Paper Lanterns - Score: 6.06
+   - genre match: lofi (+1.00)
+   - mood match: chill (+1.50)
+   - energy 0.35 vs target 0.30 (+2.70)
+   - acoustic preference (+0.86)
+
+2. Midnight Coding by LoRoom - Score: 5.49
+   - genre match: lofi (+1.00)
+   - mood match: chill (+1.50)
+   - energy 0.42 vs target 0.30 (+2.28)
+   - acoustic preference (+0.71)
+
+3. Spacewalk Thoughts by Orbit Bloom - Score: 5.30
+   - genre does not match lofi (+0.00)
+   - mood match: chill (+1.50)
+   - energy 0.28 vs target 0.30 (+2.88)
+   - acoustic preference (+0.92)
+
+4. Focus Flow by LoRoom - Score: 4.18
+   - genre match: lofi (+1.00)
+   - mood does not match chill (+0.00)
+   - energy 0.40 vs target 0.30 (+2.40)
+   - acoustic preference (+0.78)
+
+5. Letters in Autumn by Elena Varga Quartet - Score: 3.49
+   - genre does not match lofi (+0.00)
+   - mood does not match chill (+0.00)
+   - energy 0.22 vs target 0.30 (+2.52)
+   - acoustic preference (+0.97)
+```
+
+### Romantic R&B
+
+```text
+============================================================
+Profile: Romantic R&B
+User profile: {'genre': 'r&b', 'mood': 'romantic', 'energy': 0.6, 'likes_acoustic': False}
+============================================================
+
+Top recommendations:
+
+1. Velvet Hours by Amara Lux - Score: 5.48
+   - genre match: r&b (+1.00)
+   - mood match: romantic (+1.50)
+   - energy 0.48 vs target 0.60 (+2.28)
+   - non-acoustic preference (+0.70)
+
+2. Gravel Road Home by Dusty Rowe - Score: 3.20
+   - genre does not match r&b (+0.00)
+   - mood does not match romantic (+0.00)
+   - energy 0.58 vs target 0.60 (+2.88)
+   - non-acoustic preference (+0.32)
+
+3. Crown Talk by Vel Kingsley - Score: 3.20
+   - genre does not match r&b (+0.00)
+   - mood does not match romantic (+0.00)
+   - energy 0.72 vs target 0.60 (+2.28)
+   - non-acoustic preference (+0.92)
+
+4. Morning Glory Rise by Grace Avenue Choir - Score: 3.07
+   - genre does not match r&b (+0.00)
+   - mood does not match romantic (+0.00)
+   - energy 0.68 vs target 0.60 (+2.52)
+   - non-acoustic preference (+0.55)
+
+5. Honeyed Testimony by Marvella Jones - Score: 3.02
+   - genre does not match r&b (+0.00)
+   - mood does not match romantic (+0.00)
+   - energy 0.52 vs target 0.60 (+2.52)
+   - non-acoustic preference (+0.50)
+```
+
+### Adversarial Classical Nostalgic
+
+```text
+============================================================
+Profile: Adversarial Classical Nostalgic
+User profile: {'genre': 'classical', 'mood': 'nostalgic', 'energy': 0.95}
+============================================================
+
+Top recommendations:
+
+1. Gym Hero by Max Pulse - Score: 3.38
+   - genre does not match classical (+0.00)
+   - mood does not match nostalgic (+0.00)
+   - energy 0.93 vs target 0.95 (+2.88)
+   - no acoustic preference given (+0.50)
+
+2. Storm Runner by Voltline - Score: 3.26
+   - genre does not match classical (+0.00)
+   - mood does not match nostalgic (+0.00)
+   - energy 0.91 vs target 0.95 (+2.76)
+   - no acoustic preference given (+0.50)
+
+3. Letters in Autumn by Elena Varga Quartet - Score: 3.00
+   - genre match: classical (+1.00)
+   - mood match: nostalgic (+1.50)
+   - energy 0.22 vs target 0.95 (+0.00)
+   - no acoustic preference given (+0.50)
+
+4. Sunrise City by Neon Echo - Score: 2.72
+   - genre does not match classical (+0.00)
+   - mood does not match nostalgic (+0.00)
+   - energy 0.82 vs target 0.95 (+2.22)
+   - no acoustic preference given (+0.50)
+
+5. Sunday Owambe by Kola Breeze - Score: 2.60
+   - genre does not match classical (+0.00)
+   - mood does not match nostalgic (+0.00)
+   - energy 0.80 vs target 0.95 (+2.10)
    - no acoustic preference given (+0.50)
 ```
 
